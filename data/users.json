@@ -1,0 +1,20 @@
+[
+  {
+    "id": "1c783bfb-cdc1-4bb5-a5d1-8f3cccaf27a2",
+    "name": "om hari rai",
+    "email": "sanjanakumari@example.com",
+    "password": "Sanjana!123",
+    "avatar": "",
+    "bio": "",
+    "createdAt": "2026-04-19T18:47:24.234Z"
+  },
+  {
+    "id": "1c657b9a-9697-4ee1-9018-782e7f1921f3",
+    "name": "AI",
+    "email": "ai@gmail.com",
+    "password": "Ai@123",
+    "avatar": "",
+    "bio": "",
+    "createdAt": "2026-04-20T12:17:02.166Z"
+  }
+]

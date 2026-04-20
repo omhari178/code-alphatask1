@@ -1,0 +1,14 @@
+{
+  "name": "codealpha-socialconnect",
+  "version": "1.0.0",
+  "description": "CodeAlpha SocialConnect - Social Media App by om hari rai",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "uuid": "^9.0.0"
+  }
+}

@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Discover – SocialConnect</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <style>
+    .discover-hero {
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      padding: 40px 24px;
+      border-radius: 16px;
+      margin-bottom: 30px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .discover-hero h1 {
+      font-size: 2.5rem;
+      margin-bottom: 8px;
+      font-weight: 900;
+    }
+
+    .discover-hero p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+      margin-bottom: 20px;
+    }
+
+    .discover-filters {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .search-box {
+      flex: 1;
+      min-width: 250px;
+      position: relative;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 12px 16px 12px 40px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 0.95rem;
+      transition: var(--transition);
+    }
+
+    .search-box input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.1);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+      font-size: 1.2rem;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 8px;
+      border-bottom: 2px solid var(--border);
+      padding-bottom: 0;
+      overflow-x: auto;
+    }
+
+    .filter-tabs button {
+      padding: 12px 16px;
+      background: transparent;
+      border: none;
+      border-bottom: 3px solid transparent;
+      color: var(--muted);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .filter-tabs button:hover {
+      color: var(--text);
+    }
+
+    .filter-tabs button.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .posts-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    .post-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .post-card:hover {
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      transform: translateY(-2px);
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .post-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+
+    .post-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .post-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .post-author {
+      font-weight: 700;
+      color: var(--text);
+      word-break: break-word;
+    }
+
+    .post-meta {
+      font-size: 0.85rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .post-content {
+      margin-bottom: 12px;
+      line-height: 1.5;
+      color: var(--text);
+    }
+
+    .post-actions {
+      display: flex;
+      gap: 16px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .post-action {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px;
+      background: transparent;
+      border: none;
+      border-radius: 8px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .post-action:hover {
+      background: var(--bg);
+      color: var(--primary);
+    }
+
+    .post-action.liked {
+      color: var(--accent);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      margin-bottom: 16px;
+    }
+
+    .loader {
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .spinner {
+      border: 4px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin: 24px 0 16px;
+      color: var(--text);
+    }
+
+    @media (max-width: 768px) {
+      .discover-hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .discover-filters {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .search-box {
+        min-width: 100%;
+      }
+
+      .filter-tabs {
+        gap: 4px;
+      }
+
+      .filter-tabs button {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<nav class="navbar" id="navbar"></nav>
+
+<div class="container-wide">
+
+  <!-- HERO SECTION -->
+  <div class="discover-hero">
+    <h1>🌟 Discover</h1>
+    <p>Explore posts from all users in the community</p>
+  </div>
+
+  <!-- SEARCH & FILTERS -->
+  <div class="discover-filters">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input type="text" id="search-input" placeholder="Search posts by content...">
+    </div>
+  </div>
+
+  <!-- FILTER TABS -->
+  <div class="filter-tabs" id="filter-tabs">
+    <button class="filter-btn active" data-filter="all">All Posts</button>
+    <button class="filter-btn" data-filter="trending">🔥 Trending</button>
+    <button class="filter-btn" data-filter="recent">⏰ Recent</button>
+    <button class="filter-btn" data-filter="popular">⭐ Most Liked</button>
+  </div>
+
+  <!-- POSTS FEED -->
+  <div class="section-title">Community Posts</div>
+  <div class="posts-grid" id="posts-feed">
+    <div class="loader"><div class="spinner"></div></div>
+  </div>
+
+</div>
+
+<footer>
+  <strong>CodeAlpha SocialConnect</strong> &nbsp;|&nbsp;
+  Developed by <strong>om hari rai</strong> &nbsp;|&nbsp;
+  Kalinga University &nbsp;|&nbsp;
+  <a href="mailto:o95126571@gmail.com">o95126571@gmail.com</a> &nbsp;|&nbsp;
+  +91-0000000000
+</footer>
+
+<script src="/js/app.js"></script>
+<script>
+  const user = Auth.require();
+  renderNavbar('discover');
+
+  let allPosts = [];
+  let currentFilter = 'all';
+  let searchQuery = '';
+
+  // Search functionality
+  document.getElementById('search-input').addEventListener('input', (e) => {
+    searchQuery = e.target.value.toLowerCase();
+    renderPosts();
+  });
+
+  // Filter tabs
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      renderPosts();
+    });
+  });
+
+  function getFilteredPosts() {
+    let filtered = allPosts;
+
+    // Apply search filter
+    if (searchQuery) {
+      filtered = filtered.filter(p =>
+        (p.content || '').toLowerCase().includes(searchQuery) ||
+        (p.author || '').toLowerCase().includes(searchQuery)
+      );
+    }
+
+    // Apply category filter
+    if (currentFilter === 'trending') {
+      filtered = filtered.sort((a, b) => {
+        const scoreA = (a.likes?.length || 0) + ((a.comments?.length || 0) * 2);
+        const scoreB = (b.likes?.length || 0) + ((b.comments?.length || 0) * 2);
+        return scoreB - scoreA;
+      }).slice(0, 10);
+    } else if (currentFilter === 'recent') {
+      filtered = filtered.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+    } else if (currentFilter === 'popular') {
+      filtered = filtered.sort((a, b) => (b.likes?.length || 0) - (a.likes?.length || 0));
+    }
+
+    return filtered;
+  }
+
+  function renderPosts() {
+    const feed = document.getElementById('posts-feed');
+    const filtered = getFilteredPosts();
+
+    if (!filtered.length) {
+      feed.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon">🔍</div>
+          <p>No posts found. Try a different search or filter.</p>
+        </div>
+      `;
+      return;
+    }
+
+    feed.innerHTML = filtered.map(post => buildDiscoverPostCard(post, user)).join('');
+  }
+
+  function buildDiscoverPostCard(post, currentUser) {
+    const isLiked = post.likes?.includes(currentUser.email) || false;
+    const likeCount = post.likes?.length || 0;
+    const commentCount = (post.comments || []).length;
+
+    return `
+      <div class="post-card">
+        <div class="post-header">
+          <div class="post-avatar">${avatarEl(post.author, post.authorAvatar)}</div>
+          <div class="post-info">
+            <div class="post-author">${post.author}</div>
+            <div class="post-meta">${timeAgo(post.timestamp)}</div>
+          </div>
+        </div>
+        <div class="post-content">${escapeHtml(post.content)}</div>
+        <div class="post-actions">
+          <button class="post-action ${isLiked ? 'liked' : ''}" onclick="toggleLike('${post._id}')">
+            ${isLiked ? '❤️' : '🤍'} <span>${likeCount}</span>
+          </button>
+          <button class="post-action" onclick="goToPost('${post._id}')">
+            💬 <span>${commentCount}</span>
+          </button>
+          <button class="post-action" onclick="sharePost('${post._id}')">
+            📤 Share
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  async function toggleLike(postId) {
+    try {
+      const post = allPosts.find(p => p._id === postId);
+      if (!post) return;
+
+      const isLiked = post.likes?.includes(user.email);
+      const updatedLikes = isLiked
+        ? post.likes.filter(e => e !== user.email)
+        : [...(post.likes || []), user.email];
+
+      await API.put(`/posts/${postId}`, { likes: updatedLikes });
+      post.likes = updatedLikes;
+      renderPosts();
+      showToast(isLiked ? 'Removed like' : 'Post liked!', 'success');
+    } catch (e) {
+      showToast('Failed to update like', 'error');
+    }
+  }
+
+  function goToPost(postId) {
+    // Navigate to post detail page or highlight
+    showToast('Post details - feature coming soon!', 'info');
+  }
+
+  function sharePost(postId) {
+    showToast('Shared! 🎉', 'success');
+  }
+
+  async function loadPosts() {
+    try {
+      allPosts = await API.get('/posts');
+      renderPosts();
+    } catch (e) {
+      document.getElementById('posts-feed').innerHTML = `
+        <div class="empty-state">
+          <p>Failed to load posts. Please try again.</p>
+        </div>
+      `;
+    }
+  }
+
+  loadPosts();
+</script>
+</body>
+</html>
